@@ -4,6 +4,7 @@ public class Arista<T> implements Comparable<Arista<T>> {
 
     // Vértice de origen de la arista
     private final Vertice<T> origen;
+
     // Vértice de destino de la arista
 
     private final Vertice<T> destino;

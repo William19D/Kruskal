@@ -64,7 +64,6 @@ public class Vertice<T> {
     public int hashCode() {
         return Objects.hash(dato);
     }
-
     // Compara este vértice con otro para verificar igualdad
     @Override
     public boolean equals(Object obj) {

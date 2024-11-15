@@ -27,38 +27,46 @@ public class Kruskal<T> {
 
     // Implementa el algoritmo de Kruskal para encontrar el árbol de cobertura
     private Set<Arista<T>> kruskal(PriorityQueue<Arista<T>> queue) {
+        // Conjunto para almacenar las aristas del árbol de cobertura mínima
         Set<Arista<T>> mst = new HashSet<>();
+        // Mapa para rastrear los padres de cada vértice
         Map<Vertice<T>, Vertice<T>> parent = new HashMap<>();
 
+        // Inicializa el mapa de padres con cada vértice apuntando a sí mismo
         for (Arista<T> arista : aristas) {
             parent.putIfAbsent(arista.getOrigen(), arista.getOrigen());
             parent.putIfAbsent(arista.getDestino(), arista.getDestino());
         }
 
+        // Mientras la cola no esté vacía y el tamaño del MST sea menor que el número de vértices - 1
         while (!queue.isEmpty() && mst.size() < parent.size() - 1) {
+            // Obtiene y elimina la arista con el menor peso de la cola
             Arista<T> arista = queue.poll();
-            Vertice<T> v1 = find(parent, arista.getOrigen());
-            Vertice<T> v2 = find(parent, arista.getDestino());
+            // Encuentra los padres de los vértices de origen y destino de la arista
+            Vertice<T> v1 = encontrar(parent, arista.getOrigen());
+            Vertice<T> v2 = encontrar(parent, arista.getDestino());
 
+            // Si los vértices no están en el mismo conjunto, añade la arista al MST y une los conjuntos
             if (v1 != v2) {
                 mst.add(arista);
-                union(parent, v1, v2);
+                unir(parent, v1, v2);
             }
         }
 
+        // Devuelve el conjunto de aristas del árbol de cobertura mínima
         return mst;
     }
 
     // encuentra la raíz del vértice
-    private Vertice<T> find(Map<Vertice<T>, Vertice<T>> parent, Vertice<T> vertice) {
+    private Vertice<T> encontrar(Map<Vertice<T>, Vertice<T>> parent, Vertice<T> vertice) {
         if (parent.get(vertice) != vertice) {
-            parent.put(vertice, find(parent, parent.get(vertice)));
+            parent.put(vertice, encontrar(parent, parent.get(vertice)));
         }
         return parent.get(vertice);
     }
 
     // Une dos conjuntos de vértices
-    private void union(Map<Vertice<T>, Vertice<T>> parent, Vertice<T> root1, Vertice<T> root2) {
+    private void unir(Map<Vertice<T>, Vertice<T>> parent, Vertice<T> root1, Vertice<T> root2) {
         parent.put(root1, root2);
     }
 
